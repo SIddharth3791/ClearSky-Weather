@@ -1,68 +1,116 @@
 package io.egen.weather_rest.entity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+
+
+
+@Entity
+@NamedQueries({
+	@NamedQuery(name = "WeatherData.findAllCities", query = "SELECT DISTINCT u.city FROM WeatherData u"),
+	@NamedQuery(name = "WeatherData.latestWeatherPerCity",query = "SELECT  u FROM WeatherData u where u.city =:pCity ORDER BY u.timestamp DESC"),
+	@NamedQuery(name = "WeatherData.latestWeatherPropertyPerCity",query = "SELECT u FROM WeatherData u where u.city=:pCity  Order by u.timestamp DESC")
+	})
 public class WeatherData {
-	
+
+	@Id
 	private String weatherDataId;
-	private String cityName;
-	private String weatherDescription;
-	private String humidityLevel;
-	private String pressureLevel;
-	private String temperatureLevel;
-	private WindData windData;
-	private Date weatherDataTimeStamp;
-	
-	
-	public String getWeatherDataId() {
+	private String city;
+	private String description;
+	private String humidity;
+	private String pressure;
+	private String temperature;
+
+	@OneToOne(cascade = { CascadeType.ALL })
+	private Wind wind;
+
+	// @Temporal(TemporalType.TIMESTAMP)
+
+	private Date timestamp;
+
+	public WeatherData() {
+		this.weatherDataId = UUID.randomUUID().toString();
+	}
+
+	public String getWeatherId() {
 		return weatherDataId;
 	}
-	public void setWeatherDataId(String weatherDataId) {
-		this.weatherDataId = weatherDataId;
+
+	public void setWeatherId(String weatherId) {
+		this.weatherDataId = weatherId;
 	}
-	public String getCityName() {
-		return cityName;
+
+	public String getCity() {
+		return city;
 	}
-	public void setCityName(String cityName) {
-		this.cityName = cityName;
+
+	public void setCity(String city) {
+		this.city = city;
 	}
-	public String getWeatherDescription() {
-		return weatherDescription;
+
+	public String getDescription() {
+		return description;
 	}
-	public void setWeatherDescription(String weatherDescription) {
-		this.weatherDescription = weatherDescription;
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	public String getHumidityLevel() {
-		return humidityLevel;
+
+	public String getHumidity() {
+		return humidity;
 	}
-	public void setHumidityLevel(String humidityLevel) {
-		this.humidityLevel = humidityLevel;
+
+	public void setHumidity(String humidity) {
+		this.humidity = humidity;
 	}
-	public String getPressureLevel() {
-		return pressureLevel;
+
+	public String getPressure() {
+		return pressure;
 	}
-	public void setPressureLevel(String pressureLevel) {
-		this.pressureLevel = pressureLevel;
+
+	public void setPressure(String pressure) {
+		this.pressure = pressure;
 	}
-	public String getTemperatureLevel() {
-		return temperatureLevel;
+
+	public String getTemperature() {
+		return temperature;
 	}
-	public void setTemperatureLevel(String temperatureLevel) {
-		this.temperatureLevel = temperatureLevel;
+
+	public void setTemperature(String temperature) {
+		this.temperature = temperature;
 	}
-	public WindData getWindData() {
-		return windData;
+
+	public Wind getWind() {
+		return wind;
 	}
-	public void setWindData(WindData windData) {
-		this.windData = windData;
+
+	public void setWind(Wind wind) {
+		this.wind = wind;
 	}
-	public Date getWeatherDataTimeStamp() {
-		return weatherDataTimeStamp;
+
+	public Date getTimestamp() {
+		return timestamp;
 	}
-	public void setWeatherDataTimeStamp(Date weatherDataTimeStamp) {
-		this.weatherDataTimeStamp = weatherDataTimeStamp;
+
+	public void setTimestamp(String timestamp) {
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+		try {
+			this.timestamp = date.parse(timestamp);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
-	
-	
+
+
 
 }

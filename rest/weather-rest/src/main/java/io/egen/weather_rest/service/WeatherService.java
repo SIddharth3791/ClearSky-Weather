@@ -8,11 +8,11 @@ import io.egen.weather_rest.entity.WeatherData;
 
 public interface WeatherService {
 
-	public WeatherData getWeatherdata();
+	public WeatherData getWeatherdata(WeatherData weatherData);
 	public List<String> findAllCities();
 	public WeatherData latestWeatherPerCity(String cityName);
-	public WeatherData latestWeatherPropertyPerCity( String cityName, String property);
-	public WeatherData hourlyAvgWeather(String cityName);
-	public WeatherData dailyAvgWeather( String cityName,  Date date);
+	public String latestWeatherPropertyPerCity( String cityName, String property);
+	public  List<WeatherData> hourlyAvgWeather(String cityName);
+	public  WeatherData dailyAvgWeather( String cityName,  String date);
 	
 }
