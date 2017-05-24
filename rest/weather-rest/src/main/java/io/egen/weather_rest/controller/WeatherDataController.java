@@ -3,7 +3,9 @@ package io.egen.weather_rest.controller;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,16 +18,17 @@ import io.egen.weather_rest.service.WeatherService;
 @RequestMapping(value = "/weather")
 public class WeatherDataController {
 	
-	
+
 	private WeatherService service;
 	
 	public WeatherDataController(WeatherService service) {
 		this.service = service;
 	}
+
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public WeatherData getWeatherdata(){
-		return service.getWeatherdata();
+	public WeatherData getWeatherdata(@RequestBody WeatherData weatherData){
+		return service.getWeatherdata(weatherData);
 	}
 	
 	@ResponseBody
@@ -43,22 +46,22 @@ public class WeatherDataController {
 
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value = "/latest/{cityName}/{property}")
-	public WeatherData latestWeatherPropertyPerCity(@PathVariable("cityName") String cityName, @PathVariable("property")String property)
+	public String latestWeatherPropertyPerCity(@PathVariable("cityName") String cityName, @PathVariable("property")String property)
 	{
 		return service.latestWeatherPropertyPerCity(cityName, property);
 	}
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value = "/hourlyavg/{cityName}")
-	public WeatherData hourlyAvgWeather(@PathVariable("cityName") String cityName)
+	public  List<WeatherData> hourlyAvgWeather(@PathVariable("cityName") String cityName)
 	
 	{
 		return service.hourlyAvgWeather(cityName);
 	}
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value = "/dailyavg/{cityName}")
-	public WeatherData dailyAvgWeather( @PathVariable("cityName") String cityName, @PathVariable("date") Date date)
+	@RequestMapping(method = RequestMethod.GET, value = "/dailyavg/{cityName}/{date}")
+	public WeatherData dailyAvgWeather( @PathVariable("cityName") String cityName, @PathVariable("date") String date)
 	{
 		return service.dailyAvgWeather(cityName, date);
 	}
