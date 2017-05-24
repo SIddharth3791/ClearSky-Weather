@@ -7,7 +7,7 @@ public class ServletManager  extends AbstractAnnotationConfigDispatcherServletIn
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		
-		return new Class[]{WebConfig.class, JPAConfig.class};
+		return new Class[]{WebConfig.class, JPAConfig.class, SwaggerConfig.class};
 	}
 
 	@Override
